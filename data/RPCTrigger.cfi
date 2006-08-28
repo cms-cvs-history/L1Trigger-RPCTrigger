@@ -1,0 +1,14 @@
+# Module to generate response of L1Trigger/RPCTrigger
+
+  include "Geometry/MuonCommonData/data/muonIdealGeometryXML.cfi"
+  include "Geometry/RPCGeometry/data/rpcGeometry.cfi"
+
+module L1RPCMuCand = RPCTrigger {
+
+         string RPCPatternsDir = 'L1Trigger/RPCTrigger/data/Eff90PPT12/'
+         #string RPCPatternsDir = '/afs/cern.ch/user/f/fruboes/public/patterns/'
+         #string RPCPatternsDir = '/afs/cern.ch/user/f/fruboes/scratch0/CMSSW_2006-08-27/src/L1Trigger/RPCTrigger/data/Eff90PPT12/'
+         #string RPCPatternsDir = '/afs/cern.ch/user/f/fruboes/scratch0/CMSSW_2006-08-27/src/L1Trigger/RPCTrigger/test/'
+         untracked int32 RPCTriggerDebug = 0
+
+}

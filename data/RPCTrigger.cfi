@@ -6,6 +6,8 @@
 module rpctrig = RPCTrigger {
 
          string RPCPatternsDir = 'L1Trigger/RPCTrigger/data/Eff90PPT12/'
+	 untracked int32 PACsPerTower = 12
+	 
          untracked int32 RPCTriggerDebug = 0
 
 }

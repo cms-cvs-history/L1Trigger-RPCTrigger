@@ -2,10 +2,7 @@
 
 module l1RpcEmulDigis = RPCTrigger {
 
-         # Moved to L!TriggerConfig/RPCRtirggerConfig 
-         #string RPCPatternsDir = 'L1Trigger/RPCTrigger/data/Eff90PPT12/'
-	 #untracked int32 PACsPerTower = 12
-	 
+         string label = muonRPCDigis 	 
          untracked int32 RPCTriggerDebug = 0
 
 }

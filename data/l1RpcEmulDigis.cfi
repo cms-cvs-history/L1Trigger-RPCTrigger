@@ -2,7 +2,7 @@
 
 module l1RpcEmulDigis = RPCTrigger {
 
-         string label = muonRPCDigis 	 
+         string label = "muonRPCDigis" 	 
          untracked int32 RPCTriggerDebug = 0
 
 }

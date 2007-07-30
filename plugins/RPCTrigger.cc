@@ -1,7 +1,7 @@
 /** \file RPCTrigger.cc
  *
- *  $Date: 2007/06/06 15:19:20 $
- *  $Revision: 1.4 $
+ *  $Date: 2007/07/16 08:33:08 $
+ *  $Revision: 1.5 $
  *  \author Tomasz Fruboes
  */
 #include "L1Trigger/RPCTrigger/interface/RPCTrigger.h"
@@ -36,6 +36,7 @@ RPCTrigger::RPCTrigger(const edm::ParameterSet& iConfig):
      m_triggerDebug = 0;
    
   m_label = iConfig.getParameter<std::string>("label");
+  m_fixRPCGeo = iConfig.getParameter<bool>("fixRPCGeo");
 }
 
 
@@ -101,6 +102,7 @@ RPCTrigger::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::LogInfo("RPC") << "Building RPC links map for a RPCTrigger";
     edm::ESHandle<RPCGeometry> rpcGeom;
     iSetup.get<MuonGeometryRecord>().get( rpcGeom );     
+    m_theLinksystem.fixGeo(m_fixRPCGeo);
     m_theLinksystem.buildGeometry(rpcGeom);
     edm::LogInfo("RPC") << "RPC links map for a RPCTrigger built";
 
@@ -209,7 +211,7 @@ std::vector<L1MuRegionalCand> RPCTrigger::giveFinallCandindates(L1RpcTBMuonsVec 
 //    }
 
 //    etaAddr &= 63; // 6 bits only
-         
+    //std::cout << "RPC "<< etaAddr << " " << finalMuons[iMu].getEtaAddr() <<std::endl;    
     l1Cand.setEtaPacked(etaAddr);
     l1Cand.setChargeValid(true);
 

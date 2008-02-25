@@ -1,0 +1,8 @@
+# Module to generate response of L1Trigger/RPCTrigger
+
+module rpcTriggerDigis = RPCTrigger {
+
+         string label = "muonRPCDigis" 	 
+         untracked int32 RPCTriggerDebug = 0
+
+}

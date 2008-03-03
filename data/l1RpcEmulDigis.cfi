@@ -4,5 +4,5 @@ module l1RpcEmulDigis = RPCTrigger {
 
          string label = "muonRPCDigis" 	 
          untracked int32 RPCTriggerDebug = 0
-
+         bool  buildOwnLinkSystem = false
 }

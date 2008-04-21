@@ -1,8 +1,0 @@
-# Module to generate response of L1Trigger/RPCTrigger
-
-module l1RpcEmulDigis = RPCTrigger {
-
-         string label = "muonRPCDigis" 	 
-         untracked int32 RPCTriggerDebug = 0
-         bool  buildOwnLinkSystem = false
-}

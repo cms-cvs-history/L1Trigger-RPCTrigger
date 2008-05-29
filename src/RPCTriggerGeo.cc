@@ -1,7 +1,7 @@
 /** \file RPCTriggerGeo.cc
  *
- *  $Date: 2007/01/30 08:12:56 $
- *  $Revision: 1.18 $
+ *  $Date: 2007/10/08 16:12:52 $
+ *  $Revision: 1.19 $
  *  \author Tomasz Fruboes
  */
 
@@ -198,7 +198,7 @@ void RPCTriggerGeo::addDet(RPCRoll* roll){
  *
  */
 //#############################################################################
-L1RpcLogConesVec RPCTriggerGeo::getCones(edm::Handle<RPCDigiCollection> rpcDigis){
+L1RpcLogConesVec RPCTriggerGeo::getCones(edm::Handle<RPCDigiCollection> rpcDigis, int bx){
 
   std::vector<RPCLogHit> logHits;
     
@@ -218,7 +218,7 @@ L1RpcLogConesVec RPCTriggerGeo::getCones(edm::Handle<RPCDigiCollection> rpcDigis
          digiIt!=range.second;
          ++digiIt)
     {
-      if (digiIt->bx()!=0)
+      if (digiIt->bx()!=bx)
          continue;
 
       RPCRingFromRolls::stripCords sc;
@@ -266,9 +266,12 @@ L1RpcLogConesVec RPCTriggerGeo::getCones(edm::Handle<RPCDigiCollection> rpcDigis
     }
 
     if(!hitTaken) {
-      RPCLogCone newcone(*p_lhit);
-      newcone.setIdx(ActiveCones.size());
-      ActiveCones.push_back(newcone);
+      int crate = p_lhit->getLogSector();
+      if (crate == 1 || crate ==9 || crate == 11){
+        RPCLogCone newcone(*p_lhit);
+        newcone.setIdx(ActiveCones.size());
+        ActiveCones.push_back(newcone);
+      } 
     }
   }// for loghits
   

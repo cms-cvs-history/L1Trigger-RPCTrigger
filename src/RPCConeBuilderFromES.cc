@@ -8,7 +8,7 @@
 //
 // Original Author:  
 //         Created:  Mon Mar  3 13:34:20 CET 2008
-// $Id$
+// $Id: RPCConeBuilderFromES.cc,v 1.1 2008/03/03 14:35:08 fruboes Exp $
 //
 
 // system include files
@@ -41,7 +41,7 @@ RPCConeBuilderFromES::~RPCConeBuilderFromES()
 {
 }
 L1RpcLogConesVec RPCConeBuilderFromES::getConesFromES(edm::Handle<RPCDigiCollection> rpcDigis, 
-                                edm::ESHandle<L1RPCConeBuilder> coneBuilder)
+                                edm::ESHandle<L1RPCConeBuilder> coneBuilder, int bx)
 {
   std::vector<RPCLogHit> logHits;
   
@@ -61,7 +61,7 @@ L1RpcLogConesVec RPCConeBuilderFromES::getConesFromES(edm::Handle<RPCDigiCollect
          digiIt!=range.second;
          ++digiIt)
     {
-      if (digiIt->bx()!=0)
+      if (digiIt->bx()!=bx)
         continue;
       
       
@@ -91,9 +91,12 @@ L1RpcLogConesVec RPCConeBuilderFromES::getConesFromES(edm::Handle<RPCDigiCollect
     }
 
     if(!hitTaken) {
-      RPCLogCone newcone(*p_lhit);
-      newcone.setIdx(ActiveCones.size());
-      ActiveCones.push_back(newcone);
+      int crate = p_lhit->getLogSector();
+      if (crate == 1 || crate ==9 || crate == 11){
+        RPCLogCone newcone(*p_lhit);
+        newcone.setIdx(ActiveCones.size());
+        ActiveCones.push_back(newcone);
+      }
     }
   }// for loghits
 

@@ -1,0 +1,35 @@
+/* RPC */
+
+include "Geometry/RPCGeometry/data/rpcGeometry.cfi"
+include "Geometry/CMSCommonData/data/cmsIdealGeometryXML.cfi"
+#include "Geometry/MuonCommonData/data/muonIdealGeometryXML.cfi"
+include "Geometry/MuonNumbering/data/muonNumberingInitialization.cfi"
+
+### unpacking
+
+module muonRPCDigis = RPCUnpackingModule {
+    untracked InputTag InputLabel = source
+}
+
+### emulator
+
+module rpcTriggerDigis = RPCTrigger {
+    string label = "muonRPCDigis"
+    untracked int32 RPCTriggerDebug = 0
+    bool  buildOwnLinkSystem = true
+}
+
+ include "CondCore/DBCommon/data/CondDBSetup.cfi"
+ es_source RPCOrcon = PoolDBESSource {
+    using CondDBSetup
+    string connect = "frontier://(proxyurl=http://localhost:3128)(serverurl=http://frontier1.cms:8000/FrontierOnProd)(serverurl=http://frontier2.cms:8000/FrontierOnProd)(retrieve-ziplevel=0)/CMS_COND_20X_RPC"
+    VPSet toGet = {{ string record = "L1RPCConfigRcd" string tag = "RPCTriggerPatterns_cruzet" },
+                   { string record = "RPCEMapRcd" string tag = "RPCEMap_v2" }}
+ }
+
+# es_source RPCCabling = PoolDBESSource {
+#    using CondDBSetup
+#    string connect = "sqlite_fip:CondCore/SQLiteData/data/RPCEMap_181007.db"
+#    VPSet toGet = {{ string record = "RPCEMapRcd" string tag = "RPCEMap_v2" }}
+# }
+

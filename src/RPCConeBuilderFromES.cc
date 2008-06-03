@@ -8,7 +8,7 @@
 //
 // Original Author:  
 //         Created:  Mon Mar  3 13:34:20 CET 2008
-// $Id: RPCConeBuilderFromES.cc,v 1.1 2008/03/03 14:35:08 fruboes Exp $
+// $Id: RPCConeBuilderFromES.cc,v 1.1.2.1 2008/05/29 13:18:56 fruboes Exp $
 //
 
 // system include files
@@ -91,12 +91,13 @@ L1RpcLogConesVec RPCConeBuilderFromES::getConesFromES(edm::Handle<RPCDigiCollect
     }
 
     if(!hitTaken) {
-      int crate = p_lhit->getLogSector();
-      if (crate == 1 || crate ==9 || crate == 11){
+      // uncomment for TC filtering 
+      //int crate = p_lhit->getLogSector();
+      //if (crate == 1 || crate ==9 || crate == 11){
         RPCLogCone newcone(*p_lhit);
         newcone.setIdx(ActiveCones.size());
         ActiveCones.push_back(newcone);
-      }
+      //}
     }
   }// for loghits
 

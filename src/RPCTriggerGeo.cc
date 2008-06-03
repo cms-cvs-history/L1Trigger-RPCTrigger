@@ -1,7 +1,7 @@
 /** \file RPCTriggerGeo.cc
  *
- *  $Date: 2007/10/08 16:12:52 $
- *  $Revision: 1.19 $
+ *  $Date: 2008/05/29 13:18:56 $
+ *  $Revision: 1.19.4.1 $
  *  \author Tomasz Fruboes
  */
 
@@ -266,12 +266,13 @@ L1RpcLogConesVec RPCTriggerGeo::getCones(edm::Handle<RPCDigiCollection> rpcDigis
     }
 
     if(!hitTaken) {
-      int crate = p_lhit->getLogSector();
-      if (crate == 1 || crate ==9 || crate == 11){
+      // uncomment for TC filtering
+      //int crate = p_lhit->getLogSector();
+      //if (crate == 1 || crate ==9 || crate == 11){
         RPCLogCone newcone(*p_lhit);
         newcone.setIdx(ActiveCones.size());
         ActiveCones.push_back(newcone);
-      } 
+      //} 
     }
   }// for loghits
   

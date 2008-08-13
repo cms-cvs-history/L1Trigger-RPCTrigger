@@ -68,6 +68,7 @@ class RPCvsDTTiming : public edm::EDAnalyzer {
         signed short bx;
         signed short phi;
         signed short tower;
+        bool used;
      };
 
     TH2F * m_histo;
@@ -129,10 +130,7 @@ RPCvsDTTiming::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   ++n_ev;
   bool updateInThisEvent = false;
 
-  if ( n_ev % 10000==0) {
-       std::cout << " " << n_ev;
-       std::cout.flush();
-  }
+  if ( n_ev % 10000==0) std::cout << " " << n_ev;
 
   m_runnumber = iEvent.id().run();
    using namespace edm;
@@ -177,9 +175,10 @@ RPCvsDTTiming::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      L1MuRegionalCandCollection::const_iterator itDT = dtf_data.begin();
 
      for (;itDT != dtf_data.end();++itDT){
-       if (itDT->pt_packed() !=1){
+       if (itDT->pt_packed() !=0){
          //std::cout << "DT " << itDT->bx() << " " << itDT->pt_packed() << " " << itDT->eta_packed() << std::endl;
          TSimpleMuon mu;
+         mu.used = false; 
          mu.bx = itDT->bx(); 
 
          if (mu.bx < dtMinBx) dtMinBx = mu.bx;
@@ -199,6 +198,7 @@ RPCvsDTTiming::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
          //std::cout << "RPC " << itRPC->bx() << " " << itRPC->pt_packed() << std::endl;
          TSimpleMuon mu;
          mu.bx = itRPC->bx();
+         mu.used = false;
          if (mu.bx < rpcMinBx) rpcMinBx = mu.bx;
          mu.phi = itRPC->phi_packed();
          mu.tower = itRPC->eta_packed();
@@ -214,10 +214,15 @@ RPCvsDTTiming::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
   for (vector<TSimpleMuon>::iterator itRPC= rpcMuons.begin(); itRPC != rpcMuons.end() ; ++itRPC){
+    if (rpcMinBx != itRPC->bx ) continue;
 
     bool matched = false;
     int phiRPC = itRPC->phi;
     for (vector<TSimpleMuon>::iterator itDT= dtMuons.begin(); itDT != dtMuons.end() ; ++itDT){
+      if (dtMinBx != itDT->bx ) continue;
+
+      if (itDT->used == true ) continue;
+      if (itRPC->used == true ) continue;
 
       int phiDT = itDT->phi;
       int deltaPhi = 99;
@@ -235,13 +240,15 @@ RPCvsDTTiming::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       int deltaTower = itRPC->tower - itRPC->tower;
       if (deltaTower<0) deltaTower = -deltaTower;
 
-      if (!matched && deltaPhi <= m_phiMar && deltaTower <= m_towerMar){
+      if (!matched && (deltaPhi <= m_phiMar || m_phiMar == -1) && (deltaTower <= m_towerMar || m_towerMar == -1)){
         matched = true;
         /*
         std::cout << itDT->bx << " " << itRPC ->bx << std::endl;
         std::cout <<  "  -> " << itDT->tower << " " << itRPC -> tower << std::endl;
         std::cout <<  "     " << itDT->phi << " " << itRPC -> phi << std::endl << std::endl;
         */ 
+        itRPC->used=true;
+        itDT->used=true;
         m_histo->Fill(itRPC->bx, itDT->bx);
         updateInThisEvent = true;
       }
@@ -273,8 +280,9 @@ void RPCvsDTTiming::updateHist(){
    TCanvas c1;
    m_histo->Draw("BOX");
    std::stringstream nbox, ntext;
-   nbox << "run_" << m_runnumber << "box.png" ;
-   ntext << "run_" << m_runnumber << "text.png";
+
+   nbox << "run_" << m_runnumber << "t" <<m_towerMar << "p" << m_phiMar << "box.png" ;
+   ntext<< "run_" << m_runnumber << "t" <<m_towerMar << "p" << m_phiMar << "text.png";
 
    c1.Print(nbox.str().c_str());
 

@@ -6,6 +6,7 @@
 <use name=DataFormats/L1Trigger>
 <use name=DataFormats/FEDRawData>
 <use name=root>
+<use name=rootgraphics>
 
 <library file="RPCvsDTTiming.cc" name=RPCvsDTTiming>
   <flags EDM_PLUGIN=1>

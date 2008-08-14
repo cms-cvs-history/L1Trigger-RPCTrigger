@@ -13,7 +13,7 @@
 //
 // Original Author:  Tomasz Maciej Frueboes
 //         Created:  Tue Jun 17 11:47:33 CEST 2008
-// $Id$
+// $Id: TwoMuonTime.cc,v 1.1.2.1 2008/07/28 13:36:54 fruboes Exp $
 //
 //
 
@@ -164,15 +164,14 @@ TwoMuonTime::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
          TSimpleMuon mu;
          mu.bx = itRPC->bx();
          mu.phi = itRPC->phi_packed();
-         mu.tower = itRPC->eta_packed();
-         mu.wheel = getWheel(mu.tower);
          mu.topbottom = 1; // top
          if (mu.phi > 72) mu.topbottom = -1; //bottom
-      
-         mu.used = false;
+         mu.tower = itRPC->eta_packed();
          if (mu.tower > 16){
              mu.tower = - ( (~mu.tower & 63) + 1);
          }
+         mu.wheel = getWheel(mu.tower);
+         mu.used = false;
          rpcMuons.push_back(mu);
 
 

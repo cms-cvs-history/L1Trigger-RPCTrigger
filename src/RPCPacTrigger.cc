@@ -24,13 +24,16 @@ RPCPacTrigger::RPCPacTrigger(RPCTriggerConfiguration* triggerConfig):
 L1RpcTBMuonsVec2 RPCPacTrigger::runEvent(const L1RpcLogConesVec& logConesVec) {
   m_GBFinalMuons.clear();
 
+  /*
  if (m_TrigCnfg->getDebugLevel()!=0){
 #ifdef _STAND_ALONE
    std::cout << "---TBMuons in new event" << std::endl;
 #else
    LogDebug("RPCHwDebug") << "---TBMuons in new event";
 #endif // _STAND_ALONE
- }
+ }*/
+
+
   for(unsigned int iLC = 0; iLC < logConesVec.size(); iLC++) {
     if(logConesVec[iLC].getFiredPlanesCnt() >= 3) {
       m_TriggerCratesVec[m_TrigCnfg->getTCNum(logConesVec[iLC].getConeCrdnts())]

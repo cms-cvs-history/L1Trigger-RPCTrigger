@@ -128,6 +128,14 @@ RPCTrigger::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
       ActiveCones = m_theLinksystemFromES.getConesFromES(rpcDigis, coneBuilder, hwConfig, iBx);
       
     }
+    if (m_trigConfig->getDebugLevel()!=0){
+        #ifdef _STAND_ALONE
+          std::cout << "---TBMuons in new event, bx= " << iBx << std::endl;
+        #else
+          LogDebug("RPCHwDebug") << "---TBMuons in new event, bx= " << iBx;
+      #endif // _STAND_ALONE
+     }
+
     
     L1RpcTBMuonsVec2 finalMuons = m_pacTrigger->runEvent(ActiveCones);
   

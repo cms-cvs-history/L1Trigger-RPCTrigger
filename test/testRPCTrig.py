@@ -19,17 +19,17 @@ process.load("L1TriggerConfig.RPCTriggerConfig.RPCConeDefinition_cff")
 # emulation
 process.load("L1TriggerConfig.RPCTriggerConfig.L1RPCConfig_cff")
 
-process.load("L1TriggerConfig.RPCTriggerConfig.RPCConeConfig_cff")
+process.load("L1TriggerConfig.RPCTriggerConfig.RPCConeDefinition_cff")
 process.load("L1TriggerConfig.RPCTriggerConfig.RPCHwConfig_cff")
-process.load("L1Trigger.RPCTrigger.l1RpcEmulDigis_cfi")
-process.l1RpcEmulDigis.label = cms.string('simMuonRPCDigis')
+process.load("L1Trigger/RPCTrigger/rpcTriggerDigis_cff")
+process.rpcTriggerDigis.label = cms.string('simMuonRPCDigis')
 
 # rpc r2d
 #process.load("EventFilter.RPCRawToDigi.RPCSQLiteCabling_cfi")
 #process.load("EventFilter.RPCRawToDigi.rpcUnpacker_cfi")
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100000)
+    input = cms.untracked.int32(10)
 )
 
 #process.source = cms.Source("NewEventStreamFileReader",
@@ -42,4 +42,11 @@ process.source = cms.Source("PoolSource",
 )
 
 #process.a = cms.Path(process.rpcunpacker*process.l1RpcEmulDigis)
-process.a = cms.Path(process.l1RpcEmulDigis)
+process.a = cms.Path(process.rpcTriggerDigis)
+
+process.out = cms.OutputModule("PoolOutputModule",
+    fileName = cms.untracked.string('l1.root')
+)
+
+process.this_is_the_end = cms.EndPath(process.out)
+

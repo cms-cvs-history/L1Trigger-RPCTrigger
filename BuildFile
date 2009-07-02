@@ -3,6 +3,7 @@
 <use name=FWCore/ParameterSet>
 
 <use name=DataFormats/RPCDigi>
+<use name=SimDataFormats/RPCDigiSimLink>
 
 <use name=Geometry/RPCGeometry>
 <use name=Geometry/Records>
